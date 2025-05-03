@@ -34,7 +34,7 @@ public class UserServiceIMPL implements UserService {
 
     @Override
     public boolean existsByUserName(String username) {
-        return userRepository.existsByUserName(username);
+        return userRepository.existsByUsername(username);
     }
 
     @Override
