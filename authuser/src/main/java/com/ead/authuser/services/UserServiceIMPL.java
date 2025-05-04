@@ -3,6 +3,8 @@ package com.ead.authuser.services;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +15,8 @@ public class UserServiceIMPL implements UserService {
     UserRepository userRepository;
 
     @Override
-    public List<UserModel> findAll() {
-        return userRepository.findAll();
+    public Page<UserModel> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
