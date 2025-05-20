@@ -42,7 +42,7 @@ public class CourseController {
     public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId")UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if (!courseModelOptional.isPresent()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couse Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found");
         }
         courseService.delete(courseModelOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
@@ -59,21 +59,22 @@ public class CourseController {
             courseModel.setDescription(courseDTO.getDescription());
             courseModel.setImageUrl(courseDTO.getImageUrl());
             courseModel.setCourseStatus(courseDTO.getCourseStatus());
+            courseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
             return ResponseEntity.status(HttpStatus.OK).body(courseService.save(courseModel));
     }
 
     @GetMapping
     public ResponseEntity<Page<CourseModel>> getAllCourse(SpecificationTemplate.CourseExpec spec , @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(required = false) UUID userId) {
         if (userId != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(courseService.findByAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
+            return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
         } else {
-          return ResponseEntity.status(HttpStatus.OK).body(courseService.findByAll(spec,pageable));
+          return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec,pageable));
 
         }
     }
 
     @GetMapping("/{courseId}")
-    public ResponseEntity<Object> getOneUser(@PathVariable(value = "courseId") UUID courseId){
+    public ResponseEntity<Object> getOneCourse(@PathVariable(value = "courseId") UUID courseId){
         Optional<CourseModel> optionalCourseModel = courseService.findById(courseId);
         if(!optionalCourseModel.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("course não encontrado");
