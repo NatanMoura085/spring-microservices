@@ -81,6 +81,6 @@ public class ModuleController {
         var moduleModel = optionalModuleModel.get();
         moduleModel.setTitle(moduleDTO.getTitle());
         moduleModel.setDescription(moduleDTO.getDescription());
-        return ResponseEntity.status(HttpStatus.OK).body(moduleModel);
+        return ResponseEntity.status(HttpStatus.OK).body(moduleService.save(moduleModel));
     }
 }

@@ -38,8 +38,8 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(courseModel);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deleteCourse(@PathVariable(value = "couseId")UUID courseId){
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId")UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if (!courseModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Couse Not Found");
@@ -55,7 +55,7 @@ public class CourseController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("course não encontrado");
             }
             var courseModel = optionalCourseModel.get();
-            courseModel.setName(courseModel.getName());
+            courseModel.setName(courseDTO.getName());
             courseModel.setDescription(courseDTO.getDescription());
             courseModel.setImageUrl(courseDTO.getImageUrl());
             courseModel.setCourseStatus(courseDTO.getCourseStatus());
@@ -63,7 +63,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CourseModel>> getAllCourse(Specification<CourseModel> spec, @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(required = false) UUID userId) {
+    public ResponseEntity<Page<CourseModel>> getAllCourse(SpecificationTemplate.CourseExpec spec , @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(required = false) UUID userId) {
         if (userId != null) {
             return ResponseEntity.status(HttpStatus.OK).body(courseService.findByAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
         } else {
@@ -78,7 +78,7 @@ public class CourseController {
         if(!optionalCourseModel.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("course não encontrado");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(optionalCourseModel.get());
+        return ResponseEntity.status(HttpStatus.OK).body(optionalCourseModel.get());
 
     }
 }

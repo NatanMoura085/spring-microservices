@@ -19,13 +19,13 @@ public class SpecificationTemplate {
             @Spec(path = "fullName",spec = Like.class)
     })
 
-    public interface UserExpec extends Specification<UserModel> {
-    }
+    public interface UserSpec extends Specification<UserModel> {}
+
 
     public static Specification<UserModel> userCourseId(final UUID courseId) {
         return (root, query, cb) -> {
             query.distinct(true);
-            Join<UserModel, UserCourseModel> userProd = root.join("usersCourses");
+            Join<UserModel, UserCourseModel> userProd = root.join("userCourses");
             return cb.equal(userProd.get("courseId"), courseId);
         };
     }

@@ -38,7 +38,7 @@ public class LessonController {
         return ResponseEntity.status(HttpStatus.OK).body(lessonService.findAllByModule(SpecificationTemplate.lessonModuleId(moduleId).and(spec),pageable));
     }
 
-    @GetMapping("/modules/{moduleId}/lessons/lessonId")
+    @GetMapping("/modules/{moduleId}/lessons/{lessonId}")
     public ResponseEntity<Object> getOneModule(@PathVariable(value = "moduleId") UUID moduleId, @PathVariable(value = "lessonId") UUID lessonId) {
         Optional<LessonModel> optionalLessonModel = lessonService.findLessonIntoModule(moduleId, lessonId);
         if (!optionalLessonModel.isPresent()) {
@@ -71,8 +71,7 @@ public class LessonController {
         return ResponseEntity.status(HttpStatus.OK).body("delete sucessfully");
     }
 
-    @PutMapping("")
-
+    @PutMapping("/modules/{moduleId}/lessons/{lessonId}")
     public ResponseEntity<Object> updateLesson(@PathVariable(value = "moduleId") UUID moduleId, @PathVariable(value = "lessonId") UUID lessonId, @RequestBody @Valid LessonDTO lessonDTO) {
         Optional<LessonModel> optionalLessonModel = lessonService.findLessonIntoModule(moduleId, lessonId);
         if (!optionalLessonModel.isPresent()) {
@@ -84,6 +83,6 @@ public class LessonController {
         lessonModel.setTitle(lessonDTO.getTitle());
         lessonModel.setDescription(lessonDTO.getDescription());
         lessonModel.setVideoUrl(lessonDTO.getVideoUrl());
-        return ResponseEntity.status(HttpStatus.OK).body(lessonModel);
+        return ResponseEntity.status(HttpStatus.OK).body(lessonService.save(lessonModel));
     }
 }
