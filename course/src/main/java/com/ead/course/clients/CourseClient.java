@@ -1,8 +1,8 @@
-package com.ead.authuser.clients;
+package com.ead.course.clients;
 
-import com.ead.authuser.dtos.CourseDTO;
-import com.ead.authuser.dtos.ResponsePageDTO;
-import com.ead.authuser.services.UtilsService;
+import com.ead.course.controllers.UserDTO;
+import com.ead.course.dtos.ResponsePageDTO;
+import com.ead.course.services.UtilsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,29 +18,25 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-@Component
 @Log4j2
-public class UserClient {
+@Component
+public class CourseClient {
 
     @Autowired
     RestTemplate restTemplate;
 
-
     @Autowired
     UtilsService utilsService;
-
-
-    public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable) {
-        List<CourseDTO> searchResult = new ArrayList<>();
-        String url = utilsService.createUrl(userId, pageable);
+    public Page<UserDTO> getAllCoursesByCourse(UUID courseId, Pageable pageable) {
+        List<UserDTO> searchResult = new ArrayList<>();
+        String url = utilsService.createUrl(courseId, pageable);
         log.info("Request URL: {}", url);
 
         try {
-            ParameterizedTypeReference<ResponsePageDTO<CourseDTO>> responseType = new ParameterizedTypeReference<>() {};
-            ResponseEntity<ResponsePageDTO<CourseDTO>> result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+            ParameterizedTypeReference<ResponsePageDTO<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
+            ResponseEntity<ResponsePageDTO<UserDTO>> result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
 
-            ResponsePageDTO<CourseDTO> body = result.getBody();
+            ResponsePageDTO<UserDTO> body = result.getBody();
             if (body != null) {
                 searchResult = body.getContent();
                 log.debug("Response Number of Elements: {}", searchResult.size());
@@ -50,7 +46,8 @@ public class UserClient {
             log.error("Error request /courses {}", e);
         }
 
-        log.info("Ending request /courses userId {}", userId);
+        log.info("Ending request /users userId {}", courseId);
         return Page.empty(pageable);
     }
+
 }
