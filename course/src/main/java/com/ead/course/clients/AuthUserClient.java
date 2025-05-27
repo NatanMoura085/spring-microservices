@@ -5,6 +5,7 @@ import com.ead.course.dtos.ResponsePageDTO;
 import com.ead.course.services.UtilsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,16 +21,18 @@ import java.util.List;
 import java.util.UUID;
 @Log4j2
 @Component
-public class CourseClient {
+public class AuthUserClient {
 
     @Autowired
     RestTemplate restTemplate;
 
     @Autowired
     UtilsService utilsService;
+    @Value("${ead.api.url.authuser}")
+    private String REQUEST_URL_AUTHUSER;
     public Page<UserDTO> getAllCoursesByCourse(UUID courseId, Pageable pageable) {
         List<UserDTO> searchResult = new ArrayList<>();
-        String url = utilsService.createUrl(courseId, pageable);
+        String url = utilsService.createUrlGetAllUsersByCourse(courseId, pageable);
         log.info("Request URL: {}", url);
 
         try {
@@ -48,6 +51,12 @@ public class CourseClient {
 
         log.info("Ending request /users userId {}", courseId);
         return Page.empty(pageable);
+    }
+
+
+    public ResponseEntity<UserDTO> getOneUserById(UUID userId){
+        String url = REQUEST_URL_AUTHUSER + "/users/" + userId;
+        return restTemplate.exchange(url,HttpMethod.GET,null, UserDTO.class);
     }
 
 }
