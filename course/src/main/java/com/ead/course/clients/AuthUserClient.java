@@ -1,6 +1,7 @@
 package com.ead.course.clients;
 
 import com.ead.course.controllers.UserDTO;
+import com.ead.course.dtos.CourseUserDTO;
 import com.ead.course.dtos.ResponsePageDTO;
 import com.ead.course.services.UtilsService;
 import lombok.extern.log4j.Log4j2;
@@ -59,4 +60,11 @@ public class AuthUserClient {
         return restTemplate.exchange(url,HttpMethod.GET,null, UserDTO.class);
     }
 
+    public void postSubscriptionUserInCourse(UUID courseId, UUID userId) {
+        String url = REQUEST_URL_AUTHUSER + "/users/" + userId + "/courses/subscription";
+        var courseUserDTO = new CourseUserDTO();
+        courseUserDTO.setUserId(userId);
+        courseUserDTO.setCourseId(courseId);
+        restTemplate.postForObject(url, courseUserDTO, String.class);
+    }
 }

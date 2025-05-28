@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Component
 @Log4j2
-public class UserClient {
+public class CourseClient {
 
     @Autowired
     RestTemplate restTemplate;
