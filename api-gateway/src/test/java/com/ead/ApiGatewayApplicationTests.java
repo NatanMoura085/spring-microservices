@@ -1,4 +1,4 @@
-package com.ead.api_gateway;
+package com.ead;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
