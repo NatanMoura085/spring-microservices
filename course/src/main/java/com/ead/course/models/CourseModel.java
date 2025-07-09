@@ -48,5 +48,10 @@ public class CourseModel implements Serializable {
     @OneToMany(mappedBy = "course",fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
     private Set<ModuleModel> models;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "tb_courses_users", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserModeL> users;
     
 }

@@ -1,11 +1,10 @@
 package com.ead.course.specifications;
 
 import com.ead.course.models.CourseModel;
-import com.ead.course.models.UserModeL;
 import com.ead.course.models.LessonModel;
 import com.ead.course.models.ModuleModel;
+import com.ead.course.models.UserModeL;
 import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
@@ -26,6 +25,14 @@ public class SpecificationTemplate {
     })
 
     public interface CourseExpec extends Specification<CourseModel> {
+    }
+
+    @And({
+            @Spec(path = "email", spec = Like.class),
+            @Spec(path = "fullName", spec = Like.class),
+            @Spec(path = "userStatus", spec = Equal.class),
+            @Spec(path = "userType", spec = Equal.class)})
+    public interface UserSpec extends Specification<UserModeL> {
     }
 
     @And({
@@ -65,6 +72,25 @@ public class SpecificationTemplate {
         };
     }
 
+    public static Specification<UserModeL> userCourseId(final UUID courseId) {
+        return (root, query, cb) -> {
+            query.distinct(true);
+            Root<UserModeL> user = root;
+            Root<CourseModel> course = query.from(CourseModel.class);
+            Expression<Collection<UserModeL>> coursesUsers = course.get("users");
+            return cb.and(cb.equal(course.get("courseId"), courseId), cb.isMember(user, coursesUsers));
+        };
+    }
+
+    public static Specification<CourseModel> courseUserId(final UUID userId) {
+        return (root, query, cb) -> {
+            query.distinct(true);
+            Root<CourseModel> couse = root;
+            Root<UserModeL> user = query.from(UserModeL.class);
+            Expression<Collection<CourseModel>> userCourses = user.get("courses");
+            return cb.and(cb.equal(user.get("userId"), userId), cb.isMember(couse, userCourses));
+        };
+    }
 
 }
 
