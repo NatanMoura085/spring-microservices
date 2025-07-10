@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,9 +15,11 @@ public interface UserService {
 
     void deleteUser(UserModel userModel);
 
-    void save(UserModel userModel);
+    UserModel save(UserModel userModel);
 
     boolean existsByUserName(String username);
 
     boolean existsByEmail(String email);
+
+    UserModel saveUser(UserModel userModel);
 }
