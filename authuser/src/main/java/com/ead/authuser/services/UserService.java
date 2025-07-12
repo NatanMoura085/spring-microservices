@@ -22,4 +22,9 @@ public interface UserService {
     boolean existsByEmail(String email);
 
     UserModel saveUser(UserModel userModel);
+
+    void deleteByUser(UserModel userModel);
+    UserModel updateUser(UserModel userModel);
+    UserModel updatePassword(UserModel userModel);
+
 }

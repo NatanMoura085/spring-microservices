@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
             moduleRepository.deleteAll(moduleModelList);
         }
 
-
+        courserRepository.deleteCourseUserByCourse(courseModel.getCourseId());
         courserRepository.delete(courseModel);
 
     }
@@ -65,6 +65,17 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Page<CourseModel> findAll(Specification<CourseModel> spec, Pageable pageable) {
         return courserRepository.findAll(spec,pageable);
+    }
+
+    @Override
+    public boolean existsByCourseAndUser(UUID courseId, UUID userId) {
+        return courserRepository.existsByCourseAndUser(courseId, userId);
+    }
+
+    @Transactional
+    @Override
+    public void saveSubscriptionUserInCourse(UUID courseId, UUID userId) {
+        courserRepository.saveCourseUser(courseId, userId);
     }
 
 

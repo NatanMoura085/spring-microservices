@@ -24,8 +24,6 @@ public class AuthentificationController {
     @Autowired
     UserService userService;
 
-
-
     @PostMapping("/signup")
     public ResponseEntity<Object> registreUser(@RequestBody @Valid
                                                    @JsonView(UserDto.UserView.RegistrationPost.class) UserDto userDto) {

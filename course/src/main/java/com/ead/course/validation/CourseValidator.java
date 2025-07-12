@@ -1,13 +1,15 @@
 package com.ead.course.validation;
 
-import com.ead.course.controllers.UserDTO;
 import com.ead.course.dtos.CourseDTO;
+import com.ead.course.enums.UserType;
+import com.ead.course.models.UserModeL;
+import com.ead.course.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class CourseValidator implements Validator {
@@ -15,7 +17,8 @@ public class CourseValidator implements Validator {
     @Qualifier("defaultValidator")
     private Validator validator;
 
-
+    @Autowired
+    UserService userService;
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
@@ -33,14 +36,14 @@ public class CourseValidator implements Validator {
     }
 
     private void validateUserInstructor(UUID userInstructor, Errors errors) {
-        ResponseEntity<UserDTO> responseUserInstructor;
-//        try {
-//            responseUserInstructor = authUserClient.getOneUserById(userInstructor);
-//            if (responseUserInstructor.getBody().getUserType().equals(UserType.STUDENT)) {
-//                errors.rejectValue("userInstructor", "userInstructor", "User Must be INSTRUCTOR OR ADMIN ");
-//            }
-//        } catch (HttpStatusCodeException e) {
-//            errors.rejectValue("userInstructor", "userInstructor", "userInstructor Not Found");
-//        }
+        Optional<UserModeL> userModeLOptional = userService.findById(userInstructor);
+        if (!userModeLOptional.isPresent()) {
+            errors.rejectValue("userInstructor", "userInstructor", "userInstructor Not Found");
+        }
+
+        if (userModeLOptional.get().getUserType().equals(UserType.STUDENT.toString())) {
+            errors.rejectValue("userInstructor", "userInstructor", "User Must be INSTRUCTOR OR ADMIN ");
+        }
+
    }
 }

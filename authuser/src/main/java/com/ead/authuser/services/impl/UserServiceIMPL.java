@@ -62,5 +62,25 @@ public class UserServiceIMPL implements UserService {
         return userModel;
     }
 
+    @Transactional
+    @Override
+    public void deleteByUser(UserModel userModel) {
+        deleteUser(userModel);
+        userEventPublishers.publishUserEvent(userModel.convertToUserEventDto(), ActionType.DELETE);
+    }
+
+    @Transactional
+    @Override
+    public UserModel updateUser(UserModel userModel) {
+        userModel = save(userModel);
+        userEventPublishers.publishUserEvent(userModel.convertToUserEventDto(), ActionType.UPDATE);
+        return userModel;
+    }
+
+    @Override
+    public UserModel updatePassword(UserModel userModel) {
+        return save(userModel);
+    }
+
 
 }
