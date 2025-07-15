@@ -3,6 +3,7 @@ package com.ead.authuser.clients;
 import com.ead.authuser.dtos.CourseDTO;
 import com.ead.authuser.dtos.ResponsePageDTO;
 import com.ead.authuser.services.UtilsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,7 @@ public class CourseClient {
     @Value("${ead.api.url.course}")
     private String REQUEST_URL_AUTHUSER;
 
+    @Retry(name = "retryInstance",fallbackMethod = "retryfallback")
     public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable) {
         List<CourseDTO> searchResult = new ArrayList<>();
         String url = utilsService.createUrl(userId, pageable);
@@ -54,5 +56,12 @@ public class CourseClient {
 
         log.info("Ending request /courses userId {}", userId);
         return Page.empty(pageable);
+    }
+
+    public Page<CourseDTO> retryfallback(UUID userId,Pageable pageable, Throwable t) {
+        log.error("Inside retry retryfallback,cause, - {} ", t.toString());
+        List<CourseDTO> searchResult = new ArrayList<>();
+        return new PageImpl<>(searchResult);
+
     }
 }
