@@ -15,15 +15,15 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitmqConfig {
 
     @Autowired
-    CachingConnectionFactory cachingConnectionFactory;
+    private CachingConnectionFactory cachingConnectionFactory;
 
-    @Value(value = "${ead.broker.exchange.userEvent}")
+    @Value("${ead.broker.exchange.userEvent}")
     private String exchangeUserEvent;
 
     @Bean
-    public RabbitTemplate rabbitTemplate() {
+    public RabbitTemplate rabbitTemplate(Jackson2JsonMessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(cachingConnectionFactory);
-        template.setMessageConverter(template.getMessageConverter());
+        template.setMessageConverter(messageConverter);
         return template;
     }
 

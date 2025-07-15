@@ -17,7 +17,7 @@ public class UserConsumer {
     @Autowired
     UserService userService;
 
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "${queue.userEventQueu.name}", durable = "true"), exchange = @Exchange(value = "${broker.exchange.userEventExchange}", type = ExchangeTypes.FANOUT, ignoreDeclarationExceptions = "true")))
+    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "${queue.userEventQueue.name}", durable = "true"), exchange = @Exchange(value = "${broker.exchange.userEventExchange}", type = ExchangeTypes.FANOUT, ignoreDeclarationExceptions = "true")))
     public void listenUserEvent(@Payload UserEventDTO userEventDTO) {
         var userModel = userEventDTO.convertToUserModel();
         switch (ActionType.valueOf(userEventDTO.getActionType())) {

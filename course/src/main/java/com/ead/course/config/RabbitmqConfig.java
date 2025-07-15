@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitmqConfig {
 
     @Autowired
-    CachingConnectionFactory cachingConnectionFactory;
+    private CachingConnectionFactory cachingConnectionFactory;
 
     @Bean
-    public RabbitTemplate rabbitTemplate() {
+    public RabbitTemplate rabbitTemplate(Jackson2JsonMessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(cachingConnectionFactory);
-        template.setMessageConverter(template.getMessageConverter());
+        template.setMessageConverter(messageConverter);
         return template;
     }
 

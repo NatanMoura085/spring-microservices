@@ -29,7 +29,7 @@ public class UserServiceimpl implements UserService {
 
     @Override
     public UserModeL save(UserModeL userModel) {
-        return userRepository.save(userModel)
+        return userRepository.save(userModel);
     }
 
     @Transactional
