@@ -21,6 +21,7 @@ public class UserEventDTO {
 
     public UserModeL convertToUserModel() {
         var userModel = new UserModeL();
+        userModel.setFullName(this.fullName);
         BeanUtils.copyProperties(this, userModel);
         return userModel;
     }

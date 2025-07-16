@@ -14,24 +14,40 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserConsumer {
+
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "${queue.userEventQueue.name}", durable = "true"), exchange = @Exchange(value = "${broker.exchange.userEventExchange}", type = ExchangeTypes.FANOUT, ignoreDeclarationExceptions = "true")))
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "${queue.userEventQueue.name}", durable = "true"),
+            exchange = @Exchange(value = "${broker.exchange.userEventExchange}", type = ExchangeTypes.FANOUT, ignoreDeclarationExceptions = "true")
+    ))
     public void listenUserEvent(@Payload UserEventDTO userEventDTO) {
-        var userModel = userEventDTO.convertToUserModel();
-        switch (ActionType.valueOf(userEventDTO.getActionType())) {
-            case CREATE:
-                userService.save(userModel);
-                break;
+        try {
+            if (userEventDTO.getActionType() == null) {
+                throw new IllegalArgumentException("ActionType é nulo");
+            }
 
-            case UPDATE:
-                userService.save(userModel);
-                break;
-            case DELETE:
-                userService.delete(userEventDTO.getUserId());
-                break;
+            if (userEventDTO.getUserId() == null) {
+                throw new IllegalArgumentException("UserId é nulo");
+            }
 
+            switch (ActionType.valueOf(userEventDTO.getActionType())) {
+                case CREATE, UPDATE -> {
+                    if (userEventDTO.getFullName() == null || userEventDTO.getFullName().isBlank()) {
+                        System.out.println("Usuário ignorado. Campo 'fullName' está vazio ou nulo: " + userEventDTO);
+                        return;
+                    }
+                    var userModel = userEventDTO.convertToUserModel();
+                    userService.save(userModel);
+                }
+                case DELETE -> userService.delete(userEventDTO.getUserId());
+            }
+
+        } catch (Exception e) {
+            // Não lança para o Rabbit reprocessar, apenas loga
+            System.err.println("Erro ao processar UserEventDTO: " + userEventDTO);
+            e.printStackTrace();
         }
     }
 }

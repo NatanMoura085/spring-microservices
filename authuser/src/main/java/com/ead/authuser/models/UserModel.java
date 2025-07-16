@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.RepresentationModel;
@@ -31,6 +32,7 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
     @Column(nullable = false,length = 255)
     private String password;
     @Column(nullable = false,length = 150)
+    @NotNull
     private String fullname;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
