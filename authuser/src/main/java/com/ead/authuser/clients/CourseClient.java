@@ -28,14 +28,12 @@ public class CourseClient {
 
     @Autowired
     RestTemplate restTemplate;
-
-
     @Autowired
     UtilsService utilsService;
     @Value("${ead.api.url.course}")
     private String REQUEST_URL_AUTHUSER;
 
-   // @Retry(name = "retryInstance",fallbackMethod = "retryfallback")
+    @Retry(name = "retryInstance",fallbackMethod = "retryfallback")
    @CircuitBreaker(name = "circuitInstance",fallbackMethod = "circuitbreakerfallback")
     public Page<CourseDTO> getAllCoursesByUser(UUID userId, Pageable pageable) {
         List<CourseDTO> searchResult = new ArrayList<>();
