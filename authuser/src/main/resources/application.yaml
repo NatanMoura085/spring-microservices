@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: ead-authuser-service
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      discovery:
+        serviceId: ead-config-server
+#
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/ead_authuser_v2
+#    username: postgres
+#    password: root
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#
+#  rabbitmq:
+#    addresses: amqps://toizkunb:vjn8Zjfl4R4vvd5Q833SMoNrMQvO6Llt@leopard.lmq.cloudamqp.com/toizkunb
+#
+#  main:
+#    web-application-type: servlet
+#
+#server:
+#  port: 8087
+#  # servlet:
+#  #   context-path: /ead-authuser
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: always
+#
+#ead:
+#  api:
+#    url:
+#      course: http://ead-course-service
+#  broker:
+#    exchange:
+#      userEvent: ead.userevent
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+#    fetch-registry: true
+#    register-with-eureka: true
+#
+#logging:
+#  level:
+#    com.netflix.discovery: DEBUG
+#    io.github.resilience4j: DEBUG
+#
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      circuitInstance:
+#        register-health-indicator: true
+#        sliding-window-size: 4
+#        minimum-number-of-calls: 2
+#        wait-duration-in-open-state: 10s
+#        failure-rate-threshold: 50
+#  retry:
+#    instances:
+#      retryInstance:
+#        max-attempts: 3
+#        wait-duration: 1s
+#  timelimiter:
+#    instances:
+#      circuitInstance:
+#        timeout-duration: 3s
