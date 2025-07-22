@@ -46,7 +46,13 @@ ead:
       course: http://ead-course-service
   broker:
     exchange:
-      userEvent: ead.userevent
+      notificationCommandExchange: ead.notificationCommand
+    queue:
+      notificationCommandQueue:
+        name: ead.notificationCommand.ms.notification
+    key:
+      notificationCommandKey: ms.notification
+
 
 eureka:
   client:
