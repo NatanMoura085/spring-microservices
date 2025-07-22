@@ -1,61 +1,61 @@
- spring:
-   application:
-     name: ead-course-service
-   config:
-     import: 'optional:configserver:'
-   cloud:
-     config:
-       discovery:
-         serviceId: ead-config-server
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/ead_course_v2
-#    username: postgres
-#    password: root
-#    driverClassName: org.postgresql.Driver
-#
-#  jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#
-#  servlet:
-#    context-path: /ead-course
-#
-#  rabbitmq:
-#    addresses: amqps://toizkunb:vjn8Zjfl4R4vvd5Q833SMoNrMQvO6Llt@leopard.lmq.cloudamqp.com/toizkunb
-#
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#
-#ead:
-#  api:
-#    url:
-#      authuser: http://ead-authuser-service
-#      course: http://ead-course-service
-#
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka
-#    fetch-registry: true
-#    register-with-eureka: true
-#
-#server:
-#  port: 8082
-#
-#logging:
-#  level:
-#    com.netflix.discovery: DEBUG
-#    io.github.resilience4j: DEBUG
-#
-#broker:
-#  exchange:
-#    userEventExchange: ead.userevent
-#
-#queue:
-#  userEventQueue:
-#    name: ead.userevent.ms.course
+spring:
+  application:
+    name: ead-course-service
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      discovery:
+        serviceId: ead-config-server
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ead_course_v2
+    username: postgres
+    password: root
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    context-path: /ead-course
+  rabbitmq:
+    addresses: amqps://toizkunb:vjn8Zjfl4R4vvd5Q833SMoNrMQvO6Llt@leopard.lmq.cloudamqp.com/toizkunb
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+ead:
+  api:
+    url:
+      authuser: http://ead-authuser-service
+      course: http://ead-course-service
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+server:
+  port: 8082
+
+logging:
+  level:
+    com.netflix.discovery: DEBUG
+    io.github.resilience4j: DEBUG
+
+broker:
+  exchange:
+    userEventExchange: ead.userevent
+    notificationCommandExchange: ead.notificationCommand
+
+queue:
+  userEventQueue:
+    name: ead.userevent.ms.course
+key:
+  notificationCommandKey: ms.notification
