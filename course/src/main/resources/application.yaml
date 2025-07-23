@@ -2,11 +2,13 @@ spring:
   application:
     name: ead-course-service
   config:
-    import: 'optional:configserver:'
+    import: 'configserver:'
   cloud:
     config:
       discovery:
         serviceId: ead-config-server
+      username: configserver
+      password: ead123cs
   datasource:
     url: jdbc:postgresql://localhost:5432/ead_course_v2
     username: postgres
@@ -38,8 +40,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
-    fetch-registry: true
-    register-with-eureka: true
+    fetch-registry: false
+    register-with-eureka: false
 
 server:
   port: 8082
@@ -48,14 +50,13 @@ logging:
   level:
     com.netflix.discovery: DEBUG
     io.github.resilience4j: DEBUG
-
 broker:
   exchange:
     userEventExchange: ead.userevent
     notificationCommandExchange: ead.notificationCommand
+  key:
+    notificationCommandKey: ms.notification
 
 queue:
   userEventQueue:
     name: ead.userevent.ms.course
-key:
-  notificationCommandKey: ms.notification

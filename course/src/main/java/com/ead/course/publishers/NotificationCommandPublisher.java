@@ -11,10 +11,10 @@ public class NotificationCommandPublisher {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    @Value(value = "${ead.broker.exchange.notificationCommandExchange}")
+    @Value(value = "${broker.exchange.notificationCommandExchange}")
     private String notificationCommandExchange;
 
-    @Value(value = "${ead.broker.key.notificationCommandKey}")
+    @Value(value = "${broker.key.notificationCommandKey}")
     private String notificationCommandKey;
 
 

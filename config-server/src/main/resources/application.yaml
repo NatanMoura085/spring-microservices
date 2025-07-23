@@ -24,4 +24,4 @@ ead:
     password: ead123sr
   configServer:
     username: configserver
-    password: ead123sr
+    password: ead123cs
