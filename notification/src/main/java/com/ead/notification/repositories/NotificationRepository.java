@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface NotificationRepository extends JpaRepository<NotificationModel, UUID> {
 
     Page<NotificationModel> findAllByUserIdAndNotificationStatus(UUID userId, NotificationStatus notificationStatus, Pageable pageable);
-    Optional<NotificationModel> findAllNotificationIdAndUserId(UUID notificationId, UUID userId);
+    Optional<NotificationModel> findByNotificationIdAndUserId(UUID notificationId, UUID userId);
 }

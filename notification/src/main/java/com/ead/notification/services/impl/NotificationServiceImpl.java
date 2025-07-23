@@ -31,6 +31,6 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Optional<NotificationModel> findAllNotificationIdAndUserId(UUID notificationId, UUID userId) {
-        return notificationRepository.findAllNotificationIdAndUserId(notificationId,userId);
+        return notificationRepository.findByNotificationIdAndUserId(notificationId,userId);
     }
 }

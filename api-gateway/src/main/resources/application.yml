@@ -22,6 +22,12 @@ spring:
                 - Path=/ead-course/**
               filters:
                 - StripPrefix=1
+            - id: notification-service
+              uri: lb://EAD-NOTIFICATION-SERVICE
+              predicates:
+                - Path=/ead-notification/**
+              filters:
+                - StripPrefix=1
           discovery:
             locator:
               enabled: true  # Ativando o Discovery Locator
@@ -29,10 +35,15 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: 'http://${ead.serviceRegistry.username}:${ead.serviceRegistry.password}@localhost:8761/eureka'
   instance:
     hostname: localhost
 
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+
+ead:
+  serviceRegistry:
+    username: serviceregistry
+    password: ead123sr
