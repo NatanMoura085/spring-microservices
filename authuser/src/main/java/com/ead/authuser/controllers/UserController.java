@@ -48,7 +48,7 @@ public class UserController {
     public ResponseEntity<Object> getOneUser(@PathVariable(value = "userId") UUID userId) {
         Optional<UserModel> userModel = userService.findById(userId);
         if (!userModel.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body("não existe user");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("não existe user");
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(userModel.get());
         }

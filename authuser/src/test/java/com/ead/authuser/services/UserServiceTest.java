@@ -110,5 +110,29 @@ class UserServiceTest {
         Mockito.verify(userRepository,Mockito.times(1)).findById(id);
     }
 
+    @Test
+    void givenInvalidUserId_whenFindById_thenReturnsEmptyOptional() {
+        UUID id = UUID.fromString("92beee48-d846-4f12-9593-6de289aec03f");
+
+        Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        Optional<UserModel> result = userServiceIMPL.findById(id);
+
+        Assertions.assertTrue(result.isEmpty(), "Esperado que o resultado seja vazio");
+
+        Mockito.verify(userRepository, Mockito.times(1)).findById(id);
+    }
+
+    @Test
+    void givenDeleteUser_whenDeleteByUser_thenReturnUserDelete() {
+        UUID id = UUID.fromString("92beee48-d846-4f12-9593-6de289aec03f");
+        UserModel result = userModel;
+        Mockito.doNothing().when(userServiceIMPL).deleteByUser(result);
+       userServiceIMPL.deleteUser(userModel);
+
+
+       Mockito.verify(userServiceIMPL,Mockito.times(1)).deleteByUser(result);
+
+    }
 
 }
