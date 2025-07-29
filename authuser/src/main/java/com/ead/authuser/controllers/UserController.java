@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -30,9 +32,10 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @PreAuthorize("hasAnyRole('ADMIN,STUDENT')")
     @GetMapping
     public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
-                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable){
+                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable, Authentication authentication){
         Page<UserModel> userModelsPage = userService.findAll(spec,pageable);;
 
 

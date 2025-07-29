@@ -1,6 +1,7 @@
 package com.ead.authuser.config.security;
 
 import com.ead.authuser.models.UserModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,14 +12,16 @@ import java.util.UUID;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private final UUID id;
-    private final String username;
-    private final String password;
+    private UUID userId;
+    private String username;
+    @JsonIgnore
+    private String password;
+    private String email;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(UUID id, String username, String password,
+    public UserDetailsImpl(UUID userId, String username, String password,
                            Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
+        this.userId = userId ;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -40,6 +43,9 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+    public String getUserId() {
+        return userId.toString();
     }
 
     @Override
