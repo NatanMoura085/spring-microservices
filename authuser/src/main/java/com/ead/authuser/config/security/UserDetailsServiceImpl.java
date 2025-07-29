@@ -26,7 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public UserDetails loadUserById(UUID userId) throws AuthenticationCredentialsNotFoundException {
-        UserModel userModel = userRepository.findById(userId).orElseThrow(()-> new AuthenticationCredentialsNotFoundException("User Not Found with userId"))
+        UserModel userModel = userRepository.findById(userId).orElseThrow(()-> new AuthenticationCredentialsNotFoundException("User Not Found with userId"));
 
+        return null;
     }
 }
