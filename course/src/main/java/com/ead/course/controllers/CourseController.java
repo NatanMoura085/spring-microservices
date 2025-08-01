@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class CourseController {
     @Autowired
     CourseValidator courseValidator;
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PostMapping
     public ResponseEntity<Object> saveCourse(@RequestBody CourseDTO courseDTO, Errors errors) {
         courseValidator.validate(courseDTO, errors);
@@ -45,6 +47,7 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).body(courseModel);
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId")UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
@@ -55,6 +58,7 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
     }
 
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId")UUID courseId, @RequestBody @Valid CourseDTO courseDTO){
         Optional<CourseModel> optionalCourseModel = courseService.findById(courseId);
@@ -69,7 +73,7 @@ public class CourseController {
             courseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
             return ResponseEntity.status(HttpStatus.OK).body(courseService.save(courseModel));
     }
-
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping
     public ResponseEntity<Page<CourseModel>> getAllCourse(SpecificationTemplate.CourseExpec spec , @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable, @RequestParam(required = false) UUID userId) throws InterruptedException {
         Thread.sleep(8000);
@@ -81,7 +85,7 @@ public class CourseController {
 
         }
     }
-
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping("/{courseId}")
     public ResponseEntity<Object> getOneCourse(@PathVariable(value = "courseId") UUID courseId){
         Optional<CourseModel> optionalCourseModel = courseService.findById(courseId);

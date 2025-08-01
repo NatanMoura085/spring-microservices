@@ -16,11 +16,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,13 +32,14 @@ public class ModuleController {
     @Autowired
     CourseService courseService;
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping("/courses/{courseId}/modules")
     public ResponseEntity<Page<ModuleModel>> getAllModules(@PathVariable("courseId") UUID courseId, Specification<ModuleModel> spec, @PageableDefault(page = 0, size = 10, sort = "moduleId", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(moduleService.findAllByCourse(SpecificationTemplate.moduleCourseId(courseId).and(spec),pageable));
     }
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping("/courses/{courseId}/modules/{moduleId}")
-
     public ResponseEntity<Object> getOneModule(@PathVariable("courseId") UUID courseId, @PathVariable("moduleId") UUID moduleId) {
         Optional<ModuleModel> optionalModuleModel = moduleService.findModuleIntoCourse(courseId, moduleId);
         if (!optionalModuleModel.isPresent()) {
@@ -48,6 +49,7 @@ public class ModuleController {
         return ResponseEntity.status(HttpStatus.OK).body(optionalModuleModel.get());
     }
 
+    @PreAuthorize("hasAnyRole('INSTUCTOR')")
     @PostMapping("/courses/{courseId}/modules")
     public ResponseEntity<Object> saveModule(@PathVariable(value = "courseId") UUID courseId, @RequestBody @Valid ModuleDTO moduleDTO) {
         Optional<CourseModel> optionalCourseModel = courseService.findById(courseId);

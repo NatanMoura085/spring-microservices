@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class LessonController {
     LessonService lessonService;
     @Autowired
     ModuleService moduleService;
-
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping("/modules/{moduleId}/lessons")
     public ResponseEntity<Page<LessonModel>> getAllLesson(@PathVariable(value = "moduleId") UUID moduleId, Specification<LessonModel> spec, @PageableDefault(page = 0, size = 10, sort = "lessonId", direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(lessonService.findAllByModule(SpecificationTemplate.lessonModuleId(moduleId).and(spec),pageable));
@@ -46,7 +47,7 @@ public class LessonController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(optionalLessonModel.get());
     }
-
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PostMapping("/modules/{moduleId}/lessons")
     public ResponseEntity<Object> saveLesson(@PathVariable("moduleId") UUID moduleId, @RequestBody @Valid LessonDTO lessonDTO) {
         Optional<ModuleModel> optionalModuleModel = moduleService.findById(moduleId);
@@ -59,9 +60,8 @@ public class LessonController {
         lessonModel.setModuleModel(optionalModuleModel.get());
         return ResponseEntity.status(HttpStatus.CREATED).body(lessonService.save(lessonModel));
     }
-
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @DeleteMapping("modules/{moduleId}/lessons/{lessonId}")
-
     public ResponseEntity<Object> deleteLesson(@PathVariable(value = "moduleId") UUID moduleId, @PathVariable(value = "lessonId") UUID lessonId) {
         Optional<LessonModel> optionalLessonModel = lessonService.findLessonIntoModule(moduleId, lessonId);
         if (!optionalLessonModel.isPresent()) {
@@ -70,7 +70,7 @@ public class LessonController {
         lessonService.delete(optionalLessonModel.get());
         return ResponseEntity.status(HttpStatus.OK).body("delete sucessfully");
     }
-
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @PutMapping("/modules/{moduleId}/lessons/{lessonId}")
     public ResponseEntity<Object> updateLesson(@PathVariable(value = "moduleId") UUID moduleId, @PathVariable(value = "lessonId") UUID lessonId, @RequestBody @Valid LessonDTO lessonDTO) {
         Optional<LessonModel> optionalLessonModel = lessonService.findLessonIntoModule(moduleId, lessonId);
