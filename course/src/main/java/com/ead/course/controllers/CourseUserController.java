@@ -29,7 +29,7 @@ public class CourseUserController {
 
     @Autowired
     UserService userService;
-    @PreAuthorize("hasAnyRole('INSTUCTOR')")
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @GetMapping("/courses/{courseId}/users")
     public ResponseEntity<Object> getAllUsersByCouse(SpecificationTemplate.UserSpec spec  , @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable, @PathVariable(value = "courseId") UUID courseId) {
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
@@ -39,7 +39,7 @@ public class CourseUserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec),pageable));
     }
-    @PreAuthorize("hasAnyRole('INSTUCTOR')")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @PostMapping("/courses/{courseId}/users/subscription")
     public ResponseEntity<Object> saveSubscriptionUserInCourse(@PathVariable(value = "courseId") UUID courseId, @RequestBody @Valid SubscriptionDTO subscriptionDTO) {
         Optional<CourseModel> courseModel = courseService.findById(courseId);
