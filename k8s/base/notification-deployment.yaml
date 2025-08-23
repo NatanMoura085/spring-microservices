@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ead-notification
+  namespace: ead
+  labels:
+    app: ead-notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ead-notification
+  template:
+    metadata:
+      labels:
+        app: ead-notification
+    spec:
+      containers:
+        - name: ead-notification
+          image: yourrepo/ead-notification:latest
+          ports:
+            - containerPort: 8090
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 5
+            periodSeconds: 10

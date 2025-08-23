@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ead-api-gateway
+  namespace: ead
+  labels:
+    app: ead-api-gateway
+spec:
+  selector:
+    app: ead-api-gateway
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

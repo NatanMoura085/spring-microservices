@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meu-servico
+spec:
+  replicas: 4  # Mais réplicas para produção
+  template:
+    spec:
+      containers:
+        - name: meu-servico
+          image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/meu-servico:latest
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: DB_URL
+              value: jdbc:postgresql://prod-db.cluster-xxxx.us-east-1.rds.amazonaws.com:5432/minha_base
+            - name: JAVA_OPTS
+              value: "-Xms512m -Xmx1024m"

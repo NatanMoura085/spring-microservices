@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ead-service-registry
+  namespace: ead
+  labels:
+    app: ead-service-registry
+spec:
+  selector:
+    app: ead-service-registry
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
+  type: ClusterIP

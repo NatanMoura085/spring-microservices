@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1
+kind: Kustomization
+
+namespace: ead
+
+resources:
+  - namespace.yaml
+  - api-gateway-deployment.yaml
+  - api-gateway-service.yaml
+  - service-registry-deployment.yaml
+  - service-registry-service.yaml
+  - authuser-deployment.yaml
+  - authuser-service.yaml
+  - course-deployment.yaml
+  - course-service.yaml
+  - config-deployment.yaml
+  - config-service.yaml
+  - notification-deployment.yaml
+  - notification-service.yaml

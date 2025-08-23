@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ead-notification
+  namespace: ead
+  labels:
+    app: ead-notification
+spec:
+  selector:
+    app: ead-notification
+  ports:
+    - protocol: TCP
+      port: 8090
+      targetPort: 8090
+  type: ClusterIP

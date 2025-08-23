@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+# ajustar imagens para dev (exemplo)
+images:
+  - name: yourrepo/ead-api-gateway
+    newName: yourrepo/ead-api-gateway
+    newTag: dev
+  - name: yourrepo/ead-authuser
+    newName: yourrepo/ead-authuser
+    newTag: dev
+  - name: yourrepo/ead-course
+    newName: yourrepo/ead-course
+    newTag: dev
+  - name: yourrepo/ead-config
+    newName: yourrepo/ead-config
+    newTag: dev
+  - name: yourrepo/ead-notification
+    newName: yourrepo/ead-notification
+    newTag: dev
+  - name: yourrepo/ead-service-registry
+    newName: yourrepo/ead-service-registry
+    newTag: dev
+
+patchesStrategicMerge:
+  - replicas-patch-api-gateway.yaml
+  - replicas-patch-authuser.yaml
+  - replicas-patch-course.yaml
+  - replicas-patch-config.yaml
+  - replicas-patch-service-registry.yaml
+  - replicas-patch-notification.yaml

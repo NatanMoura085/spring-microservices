@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ead-service-registry
+  namespace: ead
+  labels:
+    app: ead-service-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ead-service-registry
+  template:
+    metadata:
+      labels:
+        app: ead-service-registry
+    spec:
+      containers:
+        - name: ead-service-registry
+          image: yourrepo/ead-service-registry:latest
+          ports:
+            - containerPort: 8761
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8761
+            initialDelaySeconds: 5
+            periodSeconds: 10
